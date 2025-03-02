@@ -41,6 +41,7 @@ H-sild on vooluahel, mis võimaldab alalisvoolumootori pöörlemissuunda muuta, 
 See koosneb tavaliselt neljast transistorist või lülitist, mis on paigutatud H-kujuliselt – sellest ka nimetus H-sild. Kui kaks diagonaalis olevat transistori sisse lülitada, voolab vool läbi mootori ühes suunas, ja kui sisse lülitatakse teised kaks, pöördub voolu suund, muutes mootori pöörlemissuunda.
 
 ![alt text](meedia/H_bridge.png)
+
 *(Allikas: https://commons.wikimedia.org/wiki/File:H_bridge.svg)*
 
 | S1 | S2| S3 | S4 | Tulemus |
