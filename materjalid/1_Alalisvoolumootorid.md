@@ -59,6 +59,7 @@ L293D mootoridraiver implementeerib kaks H-silda seega saab selle driveriga korr
 
 ### L293D ühendusskeem
 ![alt text](meedia/L293D.png)
+
 *Allikas: https://www.ti.com/lit/ds/symlink/l293.pdf*
 
 * **VCC1** - draiveri enda toide 5V
