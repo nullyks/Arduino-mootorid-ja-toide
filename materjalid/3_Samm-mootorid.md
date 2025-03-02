@@ -3,9 +3,9 @@
 
 *Allikas: https://commons.wikimedia.org/wiki/File:28BYJ-48_unipolar_stepper_motor_with_ULN2003_driver.jpg*
 
-Samm-mootorid on elektrimootorid, mis liiguvad kindla nurga kaupa ehk sammudena, võimaldades täpset positsioneerimist ja kiiruse juhtimist. Neid kasutatakse näiteks 3D-printerites ja teistes automaatikaseadmetes, kus on vaja kontrollitud liikumist. Erinevalt tavalistest alalisvoolumootoritest ei tööta samm-mootor pideva pöörlemisega, vaid liigub järk-järgult etteantud sammude võrra, mida määravad mootori juhtimissüsteem ja kontroller.
+Samm-mootorid *(ingl stepper-motor)* on elektrimootorid, mis liiguvad kindla nurga kaupa ehk sammudena, võimaldades täpset positsioneerimist ja kiiruse juhtimist. Neid kasutatakse näiteks 3D-printerites ja teistes automaatikaseadmetes, kus on vaja kontrollitud liikumist. Erinevalt tavalistest alalisvoolumootoritest ei tööta samm-mootor pideva pöörlemisega, vaid liigub järk-järgult etteantud sammude võrra, mida määravad mootori juhtimissüsteem ja kontroller.
 
-Arduino UNO-ga saab samm-mootoreid juhtida spetsiaalsete draiverite, näiteks ULN2003, abil. See draiver võimaldavad genereerida vajalikke juhtsignaale ja toita mootorit vajaliku pingega, kaitstes samal ajal Arduino plaati liigse voolukoormuse eest. Tavaliselt juhitakse samm-mootorit kahe või enama juhtsignaali abil, määrates sammude suuna ja kiiruse.
+Arduino UNO-ga saab samm-mootoreid juhtida spetsiaalsete draiverite, näiteks ULN2003, abil. See draiver võimaldavad genereerida vajalikke juhtsignaale ja toita mootorit vajaliku pingega, kaitstes samal ajal Arduino plaati ülekoormuse eest. Tavaliselt juhitakse samm-mootorit kahe või enama juhtsignaali abil, määrates sammude suuna ja kiiruse.
 
 Arduino UNO abil saab samm-mootorit juhtida Stepper või AccelStepper teekide abil, mis lihtsustavad liikumise kodeerimist ja kiiruse reguleerimist. Programmikoodiga saab määrata sammude arvu, suuna ja kiirenduse, et saavutada soovitud liikumine. Kuigi samm-mootorid on väga täpsed, võivad nad kaotada samme, kui koormus on liiga suur või kiirendus liiga järsk.
 
