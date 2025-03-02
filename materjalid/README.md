@@ -1,5 +1,6 @@
 # Õppematerjali osad
 
-* [1 osa](materjalid/1_osa.md)
-* [2 osa](materjalid/2_osa.md)
-* [3 osa](materjalid/3_osa.md)
+* [Alalisvoolumootorid](1_Alalisvoolumootorid.md)
+* [Servomootorid](2_Servomootorid.md)
+* [Samm-mootorid](3_Samm-mootorid.md)
+* [Iseseisvad ülesanded](4_iseseisvad_ülesanded.md)
