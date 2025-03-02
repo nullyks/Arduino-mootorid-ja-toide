@@ -18,13 +18,15 @@ Selle õppematerjali puhul ei rakendata eristavat hindamist.
 * 1 x personaalarvuti (sobib nii Windows, Linux kui macOS operatsioonisüsteem)
 * 1 x Arduino UNO arendusplaat koos sobiva USB kaabliga
 * 1 x alalisvoolumootor toitepingega 5-12V 
-* 1 x potentsiomeeter (makettplaadiga ühilduv)
+* 2 x potentsiomeeter (makettplaadiga ühilduv)
+* 2 x nupp (makettplaadiga ühilduv)
 * 1 x N-kanaliga MOSFET (näiteks: IRLZ44N)
 * 1 x L293D driver
 * 1 x servomootor (näiteks: sg90 või ky-66)
 * 1 x samm-mootor (näiteks: 28BYJ-48)
 * 1 x samm-mootoriga sobiv draiver (näiteks: ULN2003)
-* 1 x reguleeritava pingega laboritoiteblokk või 9V patarei ja 4x1,5V patareikarp 
+* 1 x reguleeritava pingega laboritoiteblokk või 9V patarei ja 4x1,5V patareikarp
+* 1 x kaugusandur 
 * makettplaadi juhtmed (isane-isane)
 * makettplaadi juhtmed (emane-isane)
 
