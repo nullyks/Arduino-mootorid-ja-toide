@@ -17,7 +17,7 @@ Siia õppematerjali juurde käiv hindamisjuhend.
 * vahend 3
 
 ## Õppematerjali osad
-* [1 osa](materjalid/1_Alalisvoolumootorid.md)
+* [Alalisvoolumootorid](materjalid/1_Alalisvoolumootorid.md)
 * [2 osa](materjalid/2_Servomootorid.md)
 * [3 osa](materjalid/3_Samm-mootorid.md)
 

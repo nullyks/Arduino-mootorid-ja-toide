@@ -97,7 +97,7 @@ void loop()
 {
   int potData=analogRead(pot);
   if(potData<500){
-  	digitalWrite(suund1, HIGH);
+    digitalWrite(suund1, HIGH);
     digitalWrite(suund2, LOW);
     int mapValue=map(potData,0,499,255,0);
     analogWrite(kiirus,mapValue);
