@@ -35,11 +35,11 @@ void setup() {
 void loop() {
 	//teeme 1 täispöörde päripäeva, kiirusega 10 sekundit pööre 
 	mootor.setSpeed(6); //kiirus on pööret/minutis
-	myStepper.step(sammu); //see on blokkeeriv funktsioon
+	mootor.step(sammu); //see on blokkeeriv funktsioon
 	
 	//teeme 2 täispööret vastupäeva kiirusega 5 sekundit pööre
-	myStepper.setSpeed(12);
-	myStepper.step(sammu*-2);
+	mootor.setSpeed(12);
+	mootor.step(sammu*-2);
 }
 ~~~~
 
