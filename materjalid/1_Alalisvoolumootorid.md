@@ -11,7 +11,7 @@ Arduino UNO suudab ise genereerida juhtsignaale, kuid ei suuda pakkuda piisavat 
 
 ## Alalisvoolumootori juhtimine MOSFET transistoriga
 
-Kõige lihtsamal juhul saame alalisvoolumootorit juhtida ühe MOSFET transistoriga. Ühest transistorist piisab mootori vooluringi lülitamiseks ja seda läbiva voolu tugevuse kontrollimiseks. Seega saame mõjutada ainult mootori pöörlemiskiirust, kuid mitte suunda. Näites saab kasutaja mootori pöörlemiskiiruse määrata potentsiomeetri asendiga. Näites kasutame N-kanaliga MOSFET transistorit.
+Kõige lihtsamal juhul saame alalisvoolumootorit juhtida ühe MOSFET [transistoriga](https://github.com/nullyks/Arduino-baaselemendid/blob/main/materjalid/3_transistorid.md). Ühest transistorist piisab mootori vooluringi lülitamiseks ja seda läbiva voolu tugevuse kontrollimiseks. Seega saame mõjutada ainult mootori pöörlemiskiirust, kuid mitte suunda. Näites saab kasutaja mootori pöörlemiskiiruse määrata potentsiomeetri asendiga. Näites kasutame N-kanaliga MOSFET transistorit.
 
 ### Ühe MOSFET transistoriga juhtimise näide
 ![alt text](meedia/Mosfet_ja_mootor.png)
@@ -79,7 +79,7 @@ L293D mootoridraiver implementeerib kaks H-silda seega saab selle driveriga korr
 
 ### L293D draiveriga mootori juhtimise näide
 
-Mootori pöörlemise suunda ja kiirust kontrollib potentsiomeeter. Keskmises asendis mootor seisab. Mida rohkem paremale on potentsiomeeter, seda kiiremini paremale mootor pöörleb ja mida rohkem vasakule on potentsiomeeter, seda kiiremini vasakule mootor pöörleb.
+Mootori pöörlemise suunda ja kiirust kontrollib [potentsiomeeter](https://github.com/nullyks/Arduino-baaselemendid/blob/main/materjalid/1_takistid.md). Keskmises asendis mootor seisab. Mida rohkem paremale on potentsiomeeter, seda kiiremini paremale mootor pöörleb ja mida rohkem vasakule on potentsiomeeter, seda kiiremini vasakule mootor pöörleb.
 
 ![alt text](meedia/L293D_näide.png)
 
