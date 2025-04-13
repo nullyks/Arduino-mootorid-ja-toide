@@ -1,6 +1,6 @@
 # Servomootorid
 
-![alt text](meedia/Micro_servo.jpg)
+![Servomootor](meedia/Micro_servo.jpg)
 
 *Allikas: https://commons.wikimedia.org/wiki/File:Micro_servo.jpg*
 
@@ -19,28 +19,29 @@ Kuigi SG-90 mikro-servomootorit on võimalik toita ka otse Arduino UNO-st tarbib
 
 Juhtimiseks kasutame näites [Servo.h teeki](https://docs.arduino.cc/libraries/servo/).
 
-![alt text](meedia/Servo_näide.png)
+![Servomootori ühendamine Arduino Uno-ga](meedia/Servo_näide.png)
 
 ~~~cpp
-#include <Servo.h>
-#define signal 3
-#define	pot A0
+#include <Servo.h> //võtame kasutusele Servo teegi
+#define signal 3 //juhime servot selle viigu kaudu
+#define	pot A0 //potentsiomeetrid loeme selle viigu kaudu
 
-Servo mootor;
+Servo mootor; //defineerime objekti mootor, mis tähistab meie servot
 
 void setup()
 {
   pinMode(signal, OUTPUT);
   Serial.begin(9600);
-  mootor.attach(signal);
+  mootor.attach(signal); //ütleme objektile moootor, et ta vahetab andmeid selle viigu kaudu
 }
 
 void loop()
 {
-  int potData=analogRead(pot);
-  int mapData=map(potData,1023,0,0,180);
-  mootor.write(mapData);
+  int potData=analogRead(pot); //loeme potentsiomeetri väärtuse
+  int mapData=map(potData,1023,0,0,180); //vastustame potentsiomeetri väärtuse vahemikku, mis sobib servo sisendiks
+  mootor.write(mapData); //ütleme, kuhu servo peab liikuma
   delay(100);
+  //kirjutame Serial ühenduse peale Servo asendi
   Serial.print("Servo asend: ");
   Serial.println(mootor.read());
 }

@@ -1,5 +1,5 @@
 # Samm-mootorid
-![alt text](meedia/sammmootor.jpg)
+![Samm-mootori pilt](meedia/sammmootor.jpg)
 
 *Allikas: https://commons.wikimedia.org/wiki/File:28BYJ-48_unipolar_stepper_motor_with_ULN2003_driver.jpg*
 
@@ -16,10 +16,10 @@ Arduino UNO abil saab samm-mootorit juhtida Stepper või AccelStepper teekide ab
 Selle mootori juhtimiseks sobib hästi ULN 2003 draiver, mis võimaldab ühendada lisatoiteallika ja kontrollida mootorit nelja viigu abil.
 Draiveriga suhtlemiseks kasutame Stepper teeki.
 
-![alt text](meedia/stepper_näide.png)
+![Samm-mootori ühendamine Ardduino UNO-ga](meedia/stepper_näide.png)
 
 ~~~cpp
-#include <Stepper.h>
+#include <Stepper.h> //võtame kasutusele Stepper teegi
 #define in1 8
 #define in2 9
 #define in3 10

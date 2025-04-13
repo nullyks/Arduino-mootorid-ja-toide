@@ -2,7 +2,7 @@
 
 Alalisvoolumootorid *(ingl Direct Current motor, DC-motor)* on elektromehaanilised seadmed, mis muundavad alalisvoolu elektrienergia pöörlevaks liikumiseks. Need mootorid töötavad magnetvälja ja elektrivoolu vastastikmõju põhimõttel ([Lorentzi jõud](https://et.wikipedia.org/wiki/Lorentzi_j%C3%B5ud)), kus rootor hakkab pöörlema, kui vool läbib mootori mähiseid. Alalisvoolumootoreid leidub mitmesugustes seadmetes, alates mänguasjadest kuni tööstusautomaatika lahendusteni. Arduino UNO-ga juhitavad alalisvoolumootorid on tavaliselt harjadega alaisvoolumootorid *(ingl Brushed DC-motor)*. Harjadega alaisvoolumootori täpsema tööpõhimõtte kohta saad lugeda [siit.](https://en.wikipedia.org/wiki/Brushed_DC_electric_motor)
 
-![alt text](meedia/DC-motor.png)
+![Alaisvoolumootori skeem](meedia/DC-motor.png)
 
 *Allikas: https://commons.wikimedia.org/wiki/File:Electric_motor_cycle_3.png*
 
@@ -15,23 +15,23 @@ Arduino UNO suudab ise genereerida juhtsignaale, kuid ei suuda pakkuda piisavat 
 Kõige lihtsamal juhul saame alalisvoolumootorit juhtida ühe MOSFET [transistoriga](https://github.com/nullyks/Arduino-baaselemendid/blob/main/materjalid/3_transistorid.md). Ühest transistorist piisab mootori vooluringi lülitamiseks ja seda läbiva voolu tugevuse kontrollimiseks. Seega saame mõjutada ainult mootori pöörlemiskiirust, kuid mitte suunda. Näites saab kasutaja mootori pöörlemiskiiruse määrata potentsiomeetri asendiga. Näites kasutame N-kanaliga MOSFET transistorit.
 
 ### Ühe MOSFET transistoriga juhtimise näide
-![alt text](meedia/Mosfet_ja_mootor.png)
+![Alalisvoolumoootori ja MOSFET transistori ühendamine Arduinoga](meedia/Mosfet_ja_mootor.png)
 
 ~~~cpp
-#define gate 3
-#define pot A0
+#define gate 3 //selle viigu abil kontrollime MOSFET-i
+#define pot A0 //selle viigu abil loeme potentsiomeetri asendi
 
 void setup() {
 	Serial.begin(9600);
-  	pinMode(gate, OUTPUT);
+    pinMode(gate, OUTPUT);
 }
 
 
 void loop() {
-	int potValue=analogRead(pot);
-  	int motorValue=map(potValue,0,1023,0,255);
+	int potValue=analogRead(pot); //loeme potentsiomeetri väärtuse
+  	int motorValue=map(potValue,0,1023,0,255); //vastustame loetud väärtuse MOSFETi juhtimiseks sobivasse vahemikku
   	Serial.println(motorValue);
-    analogWrite(gate, motorValue);
+    analogWrite(gate, motorValue); //Paneme MOSFETi paisule määratud pinge, mis võimaldab voolul läbida mootori toiteahelat.
 }
 ~~~
 [Interaktiivne simulatsioon](https://www.tinkercad.com/things/aAgbmGxxBCX-alalisvoolumootor-transistoriga?sharecode=Arc8_eGUyrxYSLrNBUmZmxTYQaNH4XsKgko5yd7moFY)
@@ -42,7 +42,7 @@ H-sild on vooluahel, mis võimaldab alalisvoolumootori pöörlemissuunda muuta, 
 
 See koosneb tavaliselt neljast transistorist või lülitist, mis on paigutatud H-kujuliselt – sellest ka nimetus H-sild. Kui kaks diagonaalis olevat transistori sisse lülitada, voolab vool läbi mootori ühes suunas, ja kui sisse lülitatakse teised kaks, pöördub voolu suund, muutes mootori pöörlemissuunda.
 
-![alt text](meedia/H_bridge.png)
+![H-silla skeem](meedia/H_bridge.png)
 
 *(Allikas: https://commons.wikimedia.org/wiki/File:H_bridge.svg)*
 
@@ -60,7 +60,7 @@ See koosneb tavaliselt neljast transistorist või lülitist, mis on paigutatud H
 L293D mootoridraiver implementeerib kaks H-silda seega saab selle driveriga korraga juhtida kahte mootorit teineteisest sõltumatult, mis teeb draiveri kasulikuks näiteks roomikutega liikurplatvormi juhtimisel. Aga samuti sobib lihtsate kaherattaliste liikurplatvormide jaoks, kus vedavad rattad on platvormi vastaskülgedel.
 
 ### L293D ühendusskeem
-![alt text](meedia/L293D.png)
+![L293D viikude skeem](meedia/L293D.png)
 
 *Allikas: https://www.ti.com/lit/ds/symlink/l293.pdf*
 
@@ -82,11 +82,12 @@ L293D mootoridraiver implementeerib kaks H-silda seega saab selle driveriga korr
 
 Mootori pöörlemise suunda ja kiirust kontrollib [potentsiomeeter](https://github.com/nullyks/Arduino-baaselemendid/blob/main/materjalid/1_takistid.md). Keskmises asendis mootor seisab. Mida rohkem paremale on potentsiomeeter, seda kiiremini paremale mootor pöörleb ja mida rohkem vasakule on potentsiomeeter, seda kiiremini vasakule mootor pöörleb.
 
-![alt text](meedia/L293D_näide.png)
+![L293D ühendamise näide](meedia/L293D_näide.png)
 
 ~~~cpp
-#define pot A0
-#define kiirus 3
+#define pot A0 //selle viigu kaudu loeme potentsiomeetri asendi
+#define kiirus 3 //see viik määrab mootori kiiruse
+//Need viigud määravad mootori pöörlemissuuna (kui üks on HIGH, siis teine on LOW)
 #define suund1 4
 #define suund2 5
 
@@ -99,20 +100,20 @@ void setup()
 
 void loop()
 {
-  int potData=analogRead(pot);
-  if(potData<500){
+  int potData=analogRead(pot); //loeme poteka väärtuse
+  if(potData<500){ // kui väärtus on väiksem kui 500, siis pöörleb mootor vasakule
     digitalWrite(suund1, HIGH);
     digitalWrite(suund2, LOW);
-    int mapValue=map(potData,0,499,255,0);
+    int mapValue=map(potData,0,499,255,0); // mida väiksem poteka näit seda suurem kiirus
     analogWrite(kiirus,mapValue);
   }
-  if(potData>=500 && potData<=520){
+  if(potData>=500 && potData<=520){ //kui potekas on vahemikus 500 - 520, siis mootor seisab
      analogWrite(kiirus,0);
   }
-  if(potData>520){
+  if(potData>520){ //kui potekas väärtus on üle 520, siis mootor pöörleb paremale
     digitalWrite(suund1, LOW);
     digitalWrite(suund2, HIGH);
-    int mapValue=map(potData,521,1023,0,255);
+    int mapValue=map(potData,521,1023,0,255); //mida suurem poteka näit, seda suurem kiirus
     analogWrite(kiirus,mapValue);
   }
 }

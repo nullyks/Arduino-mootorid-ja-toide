@@ -1,6 +1,9 @@
 # Mootorite liidestamine Arduinoga ja väline toide
 See õppematerjal selgitab alalisvoolu-, servo ja samm-mootorite liidestamist ja juhtimist Arduino Uno-ga. Kuna enamik mootoreid nõuavad võimsamat toidet, kui Arduino UNO seda suudab pakkuda, siis käsitletakse ka lisatoiteallika kasutamist ja ühendamist.
 
+## Õpieesmärgid
+Selle materjalid läbimisel õpid juhtima alalisvoolumootoreid kasutades MOSFET transistorit ja H-Silda. Saad teada, mis vahe on servo- ja samm-mootoritel ning kus ja kuidas neid kasutada. Kuna mootorid on võimsad, siis õpid kasutama ka lisatoiteallikat.
+
 ## Õpiväljundid
 Materjali edukalt läbinud õppija:
 * kirjeldab erinevate mootoritüüpide põhiomadusi;
