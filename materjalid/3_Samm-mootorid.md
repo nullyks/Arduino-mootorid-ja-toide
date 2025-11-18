@@ -43,4 +43,100 @@ void loop() {
 }
 ~~~~
 
+
 See koodinäide põhineb [pikemal ja detailsemal õpetusel](https://lastminuteengineers.com/28byj48-stepper-motor-arduino-tutorial/), mida soovitan tungivalt lugeda.
+
+## Samm-mootori MT-1701HS140A juhtiminde A4988 driveri ja Arduino UNO abil
+
+![NEMA 17 steppermootor, mudel MT-1701HS140A](meedia/NEMA17.png)
+![Steppermootori draiver](meedia/a4988.png)
+
+
+### Toide
+
+Arduino ja A4988 peavad kasutama **ühist GND**-d.
+
+| A4988 pin              | Kuhu ühendada                   |
+|------------------------|---------------------------------|
+| VMOT                   | 12 V toite **+**                |
+| GND (VMOT kõrval)      | 12 V toite **–** ja Arduino GND |
+| VDD                    | Arduino **5V**                  |
+| GND (VDD kõrval)       | Arduino **GND**                 |
+
+### Juhtsignaalid A4988 ↔ Arduino
+
+| A4988 pin | Arduino UNO pin |
+|-----------|-----------------|
+| STEP      | D2              |
+| DIR       | D3              |
+| ENABLE    | GND (draiver kogu aeg sisselülitatud) |
+
+### Samm-mootori juhtmete ühendamine
+
+MT-1701HS140A on **4-juhtmeline bipolaarne** samm-mootor.  
+Mähisepaarid saab leida multimeetri abil (takistuse mõõtmine):
+
+1. Leia kaks juhet, mille vahel takistus on umbes **1,9 Ω** → **mähis A**
+2. Ülejäänud kaks juhet moodustavad **mähise B** (samuti ~1,9 Ω)
+
+Seejärel ühenda:
+
+| A4988 pin | Mootorijuhe         |
+|-----------|---------------------|
+| 1A        | mähis A üks ots    |
+| 1B        | mähis A teine ots  |
+| 2A        | mähis B üks ots    |
+| 2B        | mähis B teine ots  |
+
+Kui mootor ainult vibreerib ega pöörle, on mähised tõenäoliselt risti – kontrolli paarid uuesti.  
+Kui pöörleb “vales” suunas, saab suunda muuta kas:
+
+- koodis (DIR pin HIGH ↔ LOW),
+- või vahetades ühe mähise juhtmete järjekorra (1A ↔ 1B).
+
+### Näiteskood (Arduino)
+
+Mootori sammusuund: 1,8° samm → **200 täissammu** ühe pöörde kohta.
+
+```cpp
+// MT-1701HS140A + A4988 + Arduino UNO
+
+// A4988 juhtsignaalid
+const int STEP_PIN = 2;   // STEP → Arduino D2
+const int DIR_PIN  = 3;   // DIR  → Arduino D3
+
+// Mootori parameetrid (täissamm)
+const int STEPS_PER_REV = 200;   // 1.8° samm → 360° / 1.8° = 200 sammu
+const int STEP_DELAY_US = 2000;  // 2000 µs HIGH + 2000 µs LOW → u 75 rpm
+
+// Abifunktsioon ühe suuna sammude tegemiseks
+void stepMotor(int steps, bool directionClockwise) {
+  // Määrame suuna (HIGH või LOW)
+  digitalWrite(DIR_PIN, directionClockwise ? HIGH : LOW);
+
+  // Teeme etteantud arvu samme
+  for (int i = 0; i < steps; i++) {
+    digitalWrite(STEP_PIN, HIGH);
+    delayMicroseconds(STEP_DELAY_US);   // impulsi "HIGH" aeg
+    digitalWrite(STEP_PIN, LOW);
+    delayMicroseconds(STEP_DELAY_US);   // impulsi "LOW" aeg
+  }
+}
+
+void setup() {
+  pinMode(STEP_PIN, OUTPUT);
+  pinMode(DIR_PIN, OUTPUT);
+
+  // Soovi korral võib algsuuna fikseerida
+  digitalWrite(DIR_PIN, LOW);
+}
+
+void loop() {
+  // 1 täispööre päripäeva
+  stepMotor(STEPS_PER_REV, true);
+  delay(1000);  // 1 s paus
+
+  // 1 täispööre vastupäeva
+  stepMotor(STEPS_PER_REV, false);
+  delay(1000);  // 1 s paus
+}
