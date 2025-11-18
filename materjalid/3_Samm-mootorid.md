@@ -49,7 +49,7 @@ See koodinäide põhineb [pikemal ja detailsemal õpetusel](https://lastminuteen
 ## Samm-mootori MT-1701HS140A juhtiminde A4988 driveri ja Arduino UNO abil
 
 ![NEMA 17 steppermootor, mudel MT-1701HS140A](meedia/NEMA17.png)
-![Steppermootori draiver](meedia/a4988.png)
+![Steppermootori draiver](meedia/a4988.jpg)
 
 
 ### Toide
@@ -140,3 +140,4 @@ void loop() {
   stepMotor(STEPS_PER_REV, false);
   delay(1000);  // 1 s paus
 }
+
