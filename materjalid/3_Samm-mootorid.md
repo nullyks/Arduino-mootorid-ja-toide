@@ -46,10 +46,10 @@ void loop() {
 
 See koodinäide põhineb [pikemal ja detailsemal õpetusel](https://lastminuteengineers.com/28byj48-stepper-motor-arduino-tutorial/), mida soovitan tungivalt lugeda.
 
-## Samm-mootori MT-1701HS140A juhtiminde A4988 driveri ja Arduino UNO abil
+## Samm-mootori MT-1701HS140A juhtimine A4988 driveri ja Arduino UNO abil
 
-![NEMA 17 steppermootor, mudel MT-1701HS140A](meedia/NEMA17.png)
-![Steppermootori draiver](meedia/a4988.jpg)
+| ![NEMA 17 steppermootor, mudel MT-1701HS140A](meedia/NEMA17.png) | ![Steppermootori draiver](meedia/a4988.jpg) |
+|------------------------|---------------------------------|
 
 
 ### Toide
@@ -140,4 +140,5 @@ void loop() {
   stepMotor(STEPS_PER_REV, false);
   delay(1000);  // 1 s paus
 }
+
 
