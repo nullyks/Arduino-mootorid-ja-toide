@@ -58,6 +58,7 @@ Selle õppematerjali puhul ei rakendata eristavat hindamist.
 * 1 × mootori voolule ja pingele sobiv kaitsediood (näiteks 1N4001 või 1N5819)
 * 1 × 10 kΩ takisti MOSFET-i paisu tõmbetakistiks
 * 1 × L293D draiver
+* 1 × DRV8833 kahekanaliline mootoridraiveri moodul
 * 2 × 0,1 µF keraamiline kondensaator L293D toite möödaviiguks
 * 1 × servomootor (näiteks: SG90 või KY66)
 * 1 × samm-mootor (näiteks: 28BYJ-48)

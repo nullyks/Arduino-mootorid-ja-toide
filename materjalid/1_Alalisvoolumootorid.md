@@ -138,3 +138,128 @@ void loop()
 ~~~
 
 [Interaktiivne simulatsioon](https://www.tinkercad.com/things/fjxmPUpN59m-l293d?sharecode=uxteCFtOcrfE4VWT_eUc0wMcFpKebon9JHcF5isJFJo)
+
+## Alalisvoolumootori juhtimine DRV8833 mooduliga
+
+[DRV8833](https://www.ti.com/product/DRV8833) on kahe H-sillaga mootoridraiver, millega saab juhtida kaht harjadega alalisvoolumootorit või üht bipolaarset samm-mootorit. Selles näites kasutame [12 viiguga DRV8833 moodulit](https://components101.com/modules/drv8833-dual-h-bridge-motor-driver-module) ja juhime selle ühe H-sillaga üht alalisvoolumootorit. Mootori pöörlemissuunda ja kiirust määrab potentsiomeetri asend nagu eelnevas L293D näites.
+
+DRV8833 kiibi tööpinge on 2,7–10,8 V ning lingitud mooduli kirjelduses on VCC-viigu vahemikuks märgitud 2,8–10,8 V. Selles näites kasutame konservatiivset ja lihtsalt meeldejäävat vahemikku 3–10 V. Vali toitepinge alati nii mootori nimipinge kui ka mooduli lubatud pinge järgi.
+
+### DRV8833 ja L293D võrdlus
+
+Mõlemad draiverid sisaldavad kaht H-silda, võimaldavad juhtida kahte harjadega alalisvoolumootorit ja vajavad Arduino ning mootori toiteallika vahele ühist GND-ühendust. Nende ehitus ja kasutusomadused on aga üsna erinevad.
+
+| Omadus | L293D | DRV8833 moodul |
+|:---|:---|:---|
+| Mootori toitepinge | 4,5–36 V | Kiibi töövahemik 2,7–10,8 V; lingitud mooduli VCC-viigu kirjelduses 2,8–10,8 V. Näites kasutame 3–10 V. |
+| Väljundaste | Bipolaartransistorid | MOSFET-transistorid |
+| Pingelang ja kasutegur | Väljunditel võib koormuse all tekkida mitmevoldine pingelang. 600 mA juures on ühe H-silla tüüpiline kogupingelang andmelehe väärtuste põhjal umbes 2,6 V, mistõttu osa energiast muutub draiveris soojuseks. | Ühe H-silla ülemise ja alumise MOSFET-i tüüpiline summaarne sisselülitustakistus on 360 mΩ. 600 mA juures vastab see ligikaudu 0,22 V pingelangule, kuid tegelik väärtus kasvab temperatuuri tõustes. Väiksem pingelang on eriti kasulik väikese toitepingega mootorite puhul. |
+| Voolutaluvus | Kuni 600 mA pidevvoolu ühe kanali kohta; 1,2 A tippvool on lubatud kuni 100 µs. | Kiibi PWP- ja RTY-korpuse kohta on 5 V ning 25 °C juures antud 1,5 A efektiivväärtus ja 2 A tippvool H-silla kohta, kuid PW-korpuse efektiivväärtus on ainult 500 mA. Mooduli tegelik pidevvool sõltub ka trükkplaadist ja jahutusest. |
+| Loogikatoide | Vajab eraldi 5 V loogikatoidet VCC1 ning mootori toidet VCC2. | Moodulil on üks VCC toitesisend mootori ja draiveri jaoks. Arduino ühendatakse juhtsisendite ning ühise GND kaudu; Arduino 5 V viiku ei ühendata VCC-ga. |
+| Kiiruse ja suuna juhtimine | Suunda juhivad kaks sisendit ning kiirust eraldi EN-viigule antav PWM-signaal. | Iga mootori mõlemad IN-sisendid määravad nii suuna kui ka kiiruse. PWM-signaal antakse parasjagu aktiivsele IN-sisendile. |
+| Peatumisviisid | EN-viigu väljalülitamisel on väljundid suure impedantsiga; mõlema suunasisendi sama tasemega saab kasutada pidurdamist. | `IN1 = LOW` ja `IN2 = LOW` laseb mootoril vabalt veereda; mõlemad sisendid HIGH rakendavad dünaamilise pidurduse. |
+| Unerežiim | Eraldi unerežiimi sisend puudub. | EEP ehk nSLEEP võimaldab kogu draiveri väikese energiatarbega unerežiimi panna. |
+| Kaitsed ja veateade | Sisemised kaitsedioodid ja termokaitse, kuid puudub eraldi veaväljund. | Ülevoolu-, lühise-, alapinge- ja ületemperatuurikaitse ning aktiiv-madal ULT ehk nFAULT veaväljund. |
+| Kaitsedioodid | L293D sisaldab induktiivkoormuse kaitsedioode. | MOSFET H-sild võimaldab mootori induktiivvoolu sisemist vabajooksu; eraldi kaitsedioode tavaliselt ei lisata. Mõlemal juhul on toite möödaviigu- ja puhverdamiskondensaatorid siiski olulised. |
+| Füüsiline kasutamine | 16 viiguga DIP-korpus sobib otse makettplaadile. | Kompaktne moodul säästab ruumi, kuid ühendusviigud tuleb tavaliselt mooduli külge joota ja makettplaadile on vaja rohkem ühendusjuhtmeid. |
+| Millal eelistada? | Kui mootori toitepinge on üle 10,8 V, kuid ei ületa 36 V, ja mootori vool jääb L293D piiridesse. | Väikese pingega aku- ja robotiprojektides, kus väiksem pingelang, parem kasutegur, kaitsed ja kompaktne moodul on olulised. |
+
+DRV8833 ei ole seega alati L293D asendus. Näiteks 12 V mootori jaoks DRV8833 ei sobi, sest selle suurim lubatud toitepinge on 10,8 V. Samuti ei tohi ainult mooduli reklaamis nimetatud tippvoolu põhjal eeldada, et moodul suudab sama suurt voolu pidevalt juhtida.
+
+### DRV8833 mooduli viigud
+
+Selle näite moodulil on 12 ühendusviiku. Trükkplaadile märgitud lühendid `EEP` ja `ULT` tähistavad vastavalt DRV8833 kiibi nSLEEP- ja nFAULT-signaali.
+
+| Viik | Otstarve |
+|:---|:---|
+| **VCC** | Mootori ja draiveri väline toide, selle mooduli puhul 3–10 V |
+| **GND** | Toiteallika, mooduli ja Arduino ühine maandus |
+| **IN1, IN2** | Esimese H-silla juhtsisendid; juhivad OUT1 ja OUT2 väljundeid |
+| **OUT1, OUT2** | Esimese mootori ühendused |
+| **IN3, IN4** | Teise H-silla juhtsisendid; juhivad OUT3 ja OUT4 väljundeid |
+| **OUT3, OUT4** | Teise mootori ühendused |
+| **EEP (nSLEEP)** | Aktiiv-madal unerežiimi sisend: LOW lülitab draiveri unerežiimi, HIGH lubab töö. Mooduli J2 jootesild võib hoida selle sisendi vaikimisi tööolekus. |
+| **ULT (nFAULT)** | Aktiiv-madal avatud neeluga veaväljund. Vea korral muutub signaal LOW-tasemeks. Lihtsas näites võib selle ühendamata jätta; vea lugemiseks on vaja tõmbetakistit või Arduino sisemist tõmmet. |
+
+Kontrolli enne ühendamist oma mooduli J2 jootesilda. Kui J2 on ühendatud, võib EEP-viigu selles näites ühendamata jätta. Kui J2 on katkestatud, peab EEP olema töö ajal HIGH-tasemel. Ära ühenda EEP-viiku pimesi Arduino 5 V viiguga: mõnel moodulil võib J2 siduda selle juba mooduli VCC-pingega. Lähtu konkreetse mooduli skeemist ja märgistusest.
+
+### Ühe mootori ühendamine
+
+| DRV8833 mooduli viik | Ühendus selles näites |
+|:---|:---|
+| **VCC** | Mootorile sobiva 3–10 V välise toiteallika plussklemm |
+| **GND** | Välise toiteallika miinusklemm ja Arduino GND |
+| **OUT1, OUT2** | Alalisvoolumootori kaks klemmi |
+| **IN1** | Arduino digitaalviik D5 |
+| **IN2** | Arduino digitaalviik D6 |
+| **EEP** | Jäta ühendamata ainult siis, kui J2 jootesild hoiab draiveri tööolekus |
+| **ULT** | Selles lihtsas näites ühendamata |
+| **IN3, IN4** | Kasutamata; kindla oleku tagamiseks võib ühendada GND-ga |
+
+Potentsiomeetri äärmised viigud ühendatakse Arduino 5 V ja GND-ga ning keskmine viik analoogsisendiga A0. Arduino D5 ja D6 on mõlemad PWM-võimelised viigud.
+
+**Märkus.** Mootorit ei toideta Arduino 5 V viigust. Väline toiteallikas ühendatakse mooduli VCC- ja GND-viiguga ning Arduino GND ühendatakse sama GND-ga, et juhtsignaalidel oleks ühine võrdlusnivoo.
+
+**Märkus.** Draiveri lähedal peab olema toite möödaviigukondensaator. Moodulil on tavaliselt vajalikud väikesed kondensaatorid juba olemas, kuid kontrolli seda oma moodulilt. Pikkade toitejuhtmete või ebastabiilse toite korral lisa mooduli VCC ja GND vahele sobiv puhverdamiskondensaator.
+
+**NB!** Vali draiver ja toiteallikas mootori seiskumisvoolu järgi. DRV8833 andmelehel nimetatud suurimad voolud sõltuvad kiibi korpusest ja jahutusest ning 2 A väärtus on tippvool. Kui moodul muutub kuumaks või termokaitse hakkab väljundit korduvalt välja lülitama, tuleb koormust vähendada või valida suurema voolutaluvusega draiver.
+
+### Sisendite loogikatabel
+
+| IN1 | IN2 | Mootori olek |
+|:---:|:---:|:---|
+| LOW | LOW | Väljundid on suure impedantsiga ja mootor veereb vabalt |
+| HIGH | LOW | Mootor pöörleb ühes suunas |
+| LOW | HIGH | Mootor pöörleb vastassuunas |
+| HIGH | HIGH | Dünaamiline pidurdus |
+
+Kui mootori tegelik pöörlemissuund ei vasta tekstis nimetatud suunale, vaheta omavahel OUT1 ja OUT2 ühendused. Kiiruse muutmiseks antakse PWM-signaal selle suuna sisendile, milles mootor peab pöörlema, ning teine sisend hoitakse LOW-tasemel.
+
+### Juhtimisprogramm
+
+Keskmises asendis on potentsiomeetri väärtusele jäetud väike surnud ala, et mootor ei hakkaks mõõtemüra tõttu edasi-tagasi võbelema. Surnud alas seatakse mõlemad sisendid LOW-tasemele ja mootor saab vabalt peatuda.
+
+~~~cpp
+const int POT_VIIK = A0;
+const int IN1_VIIK = 5;
+const int IN2_VIIK = 6;
+
+const int KESKALA_ALGUS = 500;
+const int KESKALA_LOPP = 520;
+
+void setup()
+{
+  pinMode(IN1_VIIK, OUTPUT);
+  pinMode(IN2_VIIK, OUTPUT);
+
+  digitalWrite(IN1_VIIK, LOW);
+  digitalWrite(IN2_VIIK, LOW);
+}
+
+void loop()
+{
+  int potentsiomeeter = analogRead(POT_VIIK);
+
+  if (potentsiomeeter < KESKALA_ALGUS) {
+    // Kõigepealt lülitame vastassuuna sisendi välja.
+    digitalWrite(IN2_VIIK, LOW);
+    int pwmVaartus = map(potentsiomeeter, 0, KESKALA_ALGUS - 1, 255, 0);
+    analogWrite(IN1_VIIK, pwmVaartus);
+  }
+  else if (potentsiomeeter > KESKALA_LOPP) {
+    // Kõigepealt lülitame vastassuuna sisendi välja.
+    digitalWrite(IN1_VIIK, LOW);
+    int pwmVaartus = map(potentsiomeeter, KESKALA_LOPP + 1, 1023, 0, 255);
+    analogWrite(IN2_VIIK, pwmVaartus);
+  }
+  else {
+    // Mõlemad sisendid LOW: mootor veereb vabalt peatumiseni.
+    digitalWrite(IN1_VIIK, LOW);
+    digitalWrite(IN2_VIIK, LOW);
+  }
+}
+~~~
+
+Koodis ei lülitata pöörlemissuunda otse ühelt suunalt teisele: enne uue suuna PWM-signaali rakendamist seatakse teine sisend LOW-tasemele. Mootori mehaanilise koormuse säästmiseks võib päris rakenduses lisada suunavahetuse eel lühikese peatumise või vähendada kiirust astmeliselt.
+
+DRV8833 täpsed elektrilised piirväärtused ja kaitsete käitumine on toodud [Texas Instrumentsi andmelehel](https://www.ti.com/lit/ds/symlink/drv8833.pdf).
