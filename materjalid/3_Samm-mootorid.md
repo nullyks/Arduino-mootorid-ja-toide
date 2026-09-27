@@ -51,18 +51,37 @@ void loop() {
 
 See koodinäide põhineb [pikemal ja detailsemal õpetusel](https://lastminuteengineers.com/28byj48-stepper-motor-arduino-tutorial/), mida soovitan tungivalt lugeda.
 
-## MT-1701HS140A samm-mootori juhtimine A4988 draiveri ja Arduino UNO abil
+## 42BJ3430-22A samm-mootori juhtimine A4988 draiveri ja Arduino UNO abil
 
-| ![NEMA 17 samm-mootor, mudel MT-1701HS140A](meedia/NEMA17.png) | ![Samm-mootori draiver](meedia/a4988.jpg) |
+| ![NEMA 17 samm-mootor](meedia/NEMA17.png) | ![Samm-mootori draiver](meedia/a4988.jpg) |
 |------------------------|---------------------------------|
 
 NEMA 17 tähistab mootori korpuse ja kinnitusmõõtmete klassi, mitte nimipinget, faasivoolu ega sammunurka. Draiveri seadistamisel tuleb lähtuda konkreetse mootorimudeli andmetest.
 
+Selles näites kasutatava [WOOWAIR-i mootorikomplekti](https://www.amazon.de/dp/B0FXMDVS6S?th=1) tootekood on DRR-2W-171 ning mootori korpusele on märgitud `42BJ3430-22A`. Müüja avaldatud andmed on järgmised:
+
+| Omadus | Väärtus |
+|:---|:---|
+| Mootori tüüp | Kahefaasiline neljajuhtmeline bipolaarne NEMA 17 samm-mootor |
+| Sammunurk | 1,8° ehk 200 täissammu pöörde kohta |
+| Nimivool | 1,5 A faasi kohta |
+| Faasitakistus | 2,7 Ω |
+| Faasi induktiivsus | 4,7 mH |
+| Mähise arvutuslik nimipinge | Umbes 4,1 V, sest 1,5 A × 2,7 Ω ≈ 4,05 V |
+| Hoiudemoment | Tootenimetuses 2,2 kgf·cm ehk umbes 0,22 N·m; tehnilisel tootepildil vähemalt 0,29 N·m |
+| Fikseerimismoment | 20 mN·m |
+| Mootori mõõtmed | 42 × 42 × 34 mm |
+| Võll | 5 mm D-kujuline võll, väljaulatuv pikkus 15 ± 0,25 mm |
+| Kinnitusavad | 4 × M3, avade vahekaugus 31 ± 0,1 mm |
+| Mootoripoolne pistik | PH2.0, kuuekohaline korpus nelja kasutatava kontaktiga |
+
+Müüja tootenimetuses ja tehnilisel tootepildil esitatud hoidemomendid ei lange kokku ning sellele mootorile ei ole leitud eraldiseisvat tootja andmelehte. Seetõttu ei tohiks suuremat, 0,29 N·m väärtust käsitleda kontrollitud miinimumnäitajana. Õppetöös on mõistlik lähtuda konservatiivsest väärtusest 2,2 kgf·cm ehk umbes 0,22 N·m.
+
 ### Voolupiirangu seadistamine
 
-Enne mootori käivitamist tuleb A4988 voolupiirang seadistada mootori ja konkreetse draivermooduli järgi. MT-1701HS140A nimivool on 1,4 A faasi kohta. Sobiv VREF-pinge sõltub draivermoodulil kasutatud mõõtetakistitest, mistõttu ei saa kõigile A4988 moodulitele kasutada üht universaalset VREF-väärtust. Seadistamisel tuleb järgida konkreetse mooduli tootja juhendit.
+Enne mootori käivitamist tuleb A4988 voolupiirang seadistada mootori ja konkreetse draivermooduli järgi. 42BJ3430-22A nimivool on müüja andmetel 1,5 A faasi kohta. See on mootori suurim nimivool, mitte vool, mille iga A4988 moodul suudab pidevalt ja ohutult anda. Sobiv VREF-pinge sõltub draivermoodulil kasutatud mõõtetakistitest, mistõttu ei saa kõigile A4988 moodulitele kasutada üht universaalset VREF-väärtust. Seadistamisel tuleb järgida konkreetse mooduli tootja juhendit.
 
-Draivermooduli lubatud voolu ja jahutusvajadust tuleb kontrollida eraldi. 1,4 A faasivool võib olenevalt moodulist nõuda jahutusradiaatorit ja sundjahutust. Toiteallikast mõõdetud vool ei võrdu mootori ühe mähise vooluga.
+Draivermooduli lubatud voolu ja jahutusvajadust tuleb kontrollida eraldi. 1,5 A faasivool nõuab tavaliselt A4988 mooduli head jahutust ning võib olenevalt moodulist vajada nii jahutusradiaatorit kui ka sundjahutust. Õppetöös võib voolupiirangu seada väiksemaks, kui mootor annab koormuse liigutamiseks piisavalt momenti. Toiteallikast mõõdetud vool ei võrdu mootori ühe mähise vooluga.
 
 ### Toide
 
@@ -98,23 +117,24 @@ Kui MS1, MS2 ja MS3 on madalal loogikatasemel, töötab A4988 täissammurežiimi
 
 **NB!** Ära ühenda ega eemalda samm-mootori juhtmeid ning ära muuda mähiste ühendusi ajal, mil A4988 on pingestatud. Enne ühenduste muutmist lahuta nii mootori väline toiteallikas kui ka Arduino USB- või muu toide.
 
-MT-1701HS140A on **4-juhtmeline bipolaarne** samm-mootor.
+42BJ3430-22A on **4-juhtmeline bipolaarne** samm-mootor. Müüja ühendusskeemi järgi on punane ja sinine juhe ühe mähise ning roheline ja must juhe teise mähise otsad. Kuna müüja hoiatab, et kaablite värvijärjestus võib erineda, tuleb mähisepaarid enne A4988-ga ühendamist multimeetriga üle kontrollida.
 
 Mähisepaarid saab leida multimeetri abil (takistuse mõõtmine):
 
-1. Leia kaks juhet, mille vahel takistus on umbes **1,9 Ω** → **mähis A**
-2. Ülejäänud kaks juhet moodustavad **mähise B** (samuti ~1,9 Ω)
+1. Kontrolli, kas punase ja sinise juhtme vahel on takistus umbes **2,7 Ω** → **mähis A**.
+2. Kontrolli, kas rohelise ja musta juhtme vahel on samuti umbes **2,7 Ω** → **mähis B**.
+3. Eri mähistesse kuuluvate juhtmete vahel ei tohiks multimeeter elektrilist ühendust näidata.
 
-Oluline on leida kaks omavahel ühendatud väikese takistusega juhtmepaari. Mõõdetud väärtus ei pea olema täpselt 1,9 Ω, sest tulemust mõjutavad mootori eksemplar ning multimeetri mõõtejuhtmete ja kontaktide takistus.
+Oluline on leida kaks omavahel ühendatud väikese takistusega juhtmepaari. Mõõdetud väärtus ei pea olema täpselt 2,7 Ω, sest tulemust mõjutavad mootori eksemplar ning multimeetri mõõtejuhtmete ja kontaktide takistus. Kui värvid ei vasta siin kirjeldatule, lähtu mõõdetud mähisepaaridest, mitte juhtmete värvist.
 
 Seejärel ühenda:
 
-| A4988 viik | Mootorijuhe        |
-|-----------|---------------------|
-| 1A        | mähis A üks ots    |
-| 1B        | mähis A teine ots  |
-| 2A        | mähis B üks ots    |
-| 2B        | mähis B teine ots  |
+| A4988 viik | Mootorijuhe müüja skeemi järgi |
+|-----------|-------------------------------|
+| 1A        | punane, mähis A+              |
+| 1B        | sinine, mähis A−              |
+| 2A        | roheline, mähis B+             |
+| 2B        | must, mähis B−                 |
 
 Kui mootor ainult vibreerib ega pöörle, on vähemalt ühte A4988 väljundipaari tõenäoliselt ühendatud eri mähiste juhtmed. Mõõda mähisepaarid uuesti ja ühenda ühe mähise otsad viikudele 1A–1B ning teise mähise otsad viikudele 2A–2B.
 Kui pöörleb “vales” suunas, saab suunda muuta kas:
@@ -127,7 +147,7 @@ Kui pöörleb “vales” suunas, saab suunda muuta kas:
 Mootori sammusuund: 1,8° samm → **200 täissammu** ühe pöörde kohta.
 
 ```cpp
-// MT-1701HS140A + A4988 + Arduino UNO
+// 42BJ3430-22A + A4988 + Arduino UNO
 
 // A4988 juhtsignaalid
 const int STEP_PIN = 2;   // STEP → Arduino D2

@@ -63,7 +63,7 @@ Selle õppematerjali puhul ei rakendata eristavat hindamist.
 * 1 × servomootor (näiteks: SG90 või KY66)
 * 1 × samm-mootor (näiteks: 28BYJ-48)
 * 1 × samm-mootoriga sobiv draiver (näiteks: ULN2003)
-* 1 × neljajuhtmeline bipolaarne NEMA 17 samm-mootor (näiteks MT-1701HS140A)
+* 1 × neljajuhtmeline bipolaarne NEMA 17 samm-mootor (mootori märgistus 42BJ3430-22A)
 * 1 × A4988 samm-mootori draivermoodul
 * 1 × vähemalt 47 µF ja 25 V elektrolüütkondensaator
 * 1 × reguleeritava voolupiiranguga laboritoiteallikas, mille väljundpinge on seadistatav vähemalt vahemikus 5–12 V ja vooluandmisvõime vähemalt 2 A
